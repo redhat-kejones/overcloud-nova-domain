@@ -2,6 +2,8 @@
 - hosts: compute
   name: Change DHCP Domain in nova.conf
   become: yes
+  vars_files:
+    - vars.yml
   tasks:
     - name: Change dhcp_domain in nova.conf
       lineinfile:
