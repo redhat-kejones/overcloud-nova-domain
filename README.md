@@ -8,4 +8,4 @@ To run:
 
 1. Edit the vars.yml file and set the nova_domain variable to your desired domain
 2. Run the playbook
-  `$ ansible-playbook -i /usr/bin/tripleo-ansible-inventory change_nova_dhcpdomain.yml`
+   `$ ansible-playbook -i /usr/bin/tripleo-ansible-inventory change_nova_dhcpdomain.yml`
