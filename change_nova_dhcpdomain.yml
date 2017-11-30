@@ -14,6 +14,11 @@
       service:
         name: openstack-nova-compute
         state: restarted
+    - name: Change dhcp_domain in neutron dhcp_agent.ini
+      lineinfile:
+        dest: /etc/neutron/dhcp_agent.ini
+        regexp: '^dhcp_domain='
+        line: 'dhcp_domain={{ nova_domain }}'
 
 - hosts: controller
   name: Change DHCP Domain in nova.conf
@@ -29,4 +34,13 @@
     - name: restart openstack-nova-api
       service:
         name: openstack-nova-api
+        state: restarted
+    - name: Change dhcp_domain in neutron dhcp_agent.ini
+      lineinfile:
+        dest: /etc/neutron/dhcp_agent.ini
+        regexp: '^dhcp_domain='
+        line: 'dhcp_domain={{ nova_domain }}'
+    - name: restart openstack-nova-api
+      service:
+        name: neutron-dhcp-agent
         state: restarted
