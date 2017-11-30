@@ -7,5 +7,10 @@ This is meant to be run on the undercloud of a Red Hat OpenStack Platform deploy
 To run:
 
 1. Edit the vars.yml file and set the nova_domain variable to your desired domain
-2. Run the playbook
-   `$ ansible-playbook -i /usr/bin/tripleo-ansible-inventory change_nova_dhcpdomain.yml`
+2. Source your stackrc file on the undercloud
+
+  ```$ source ~/stackrc```
+
+3. Run the playbook
+
+   ```$ ansible-playbook -i /usr/bin/tripleo-ansible-inventory change_nova_dhcpdomain.yml```
