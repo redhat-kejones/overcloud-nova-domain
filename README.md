@@ -9,7 +9,7 @@ To run:
 1. Edit the vars.yml file and set the nova_domain variable to your desired domain
 2. Source your stackrc file on the undercloud
 
-  ```$ source ~/stackrc```
+   ```$ source ~/stackrc```
 
 3. Run the playbook
 
