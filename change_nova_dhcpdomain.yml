@@ -1,0 +1,28 @@
+---
+- hosts: compute
+  name: Change DHCP Domain in nova.conf
+  become: yes
+  tasks:
+    - name: Change dhcp_domain in nova.conf
+      lineinfile:
+        path: /etc/nova/nova.conf
+        regexp: '^dhcp_domain='
+        line: 'dhcp_domain={{ nova_domain }}'
+    - name: restart openstack-nova-compute
+      service:
+        name: openstack-nova-compute
+        state: restarted
+
+- hosts: controller
+  name: Change DHCP Domain in nova.conf
+  become: yes
+  tasks:
+    - name: Change dhcp_domain in nova.conf
+      lineinfile:
+        path: /etc/nova/nova.conf
+        regexp: '^dhcp_domain='
+        line: 'dhcp_domain={{ nova_domain }}'
+    - name: restart openstack-nova-api
+      service:
+        name: openstack-nova-api
+        state: restarted
