@@ -1,6 +1,6 @@
 ---
 - hosts: compute
-  name: Change DHCP Domain in nova.conf
+  name: Change DHCP/DNS Domain in nova and neutron
   become: yes
   vars_files:
     - vars.yml
@@ -17,11 +17,21 @@
     - name: Change dhcp_domain in neutron dhcp_agent.ini
       lineinfile:
         dest: /etc/neutron/dhcp_agent.ini
-        regexp: '^dhcp_domain='
-        line: 'dhcp_domain={{ nova_domain }}'
+        regexp: '^dhcp_domain ='
+        line: 'dhcp_domain = {{ nova_domain }}'
+    - name: Change dns_domain in neutron neutron.conf
+      lineinfile:
+        dest: /etc/neutron/neutron.conf
+        regexp: '^dns_domain ='
+        line: 'dns_domain = {{ nova_domain }}.'
+    - name: Change extension_drivers in neutron ml2 plugins
+      lineinfile:
+        dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+        regexp: '^extension_drivers ='
+        line: 'extension_drivers = qos,port_security,dns'
 
 - hosts: controller
-  name: Change DHCP Domain in nova.conf
+  name: Change DHCP/DNS Domain in nova and neutron
   become: yes
   vars_files:
     - vars.yml
@@ -38,9 +48,23 @@
     - name: Change dhcp_domain in neutron dhcp_agent.ini
       lineinfile:
         dest: /etc/neutron/dhcp_agent.ini
-        regexp: '^dhcp_domain='
-        line: 'dhcp_domain={{ nova_domain }}'
-    - name: restart openstack-nova-api
+        regexp: '^dhcp_domain ='
+        line: 'dhcp_domain = {{ nova_domain }}'
+    - name: Change dns_domain in neutron.conf
+      lineinfile:
+        dest: /etc/neutron/neutron.conf
+        regexp: '^dns_domain ='
+        line: 'dns_domain = {{ nova_domain }}.'
+    - name: Change extension_drivers in neutron ml2 plugins
+      lineinfile:
+        dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+        regexp: '^extension_drivers ='
+        line: 'extension_drivers = qos,port_security,dns'
+    - name: restart neutron-server
+      service:
+        name: neutron-server
+        state: restarted
+    - name: restart neutron-dhcp-agent
       service:
         name: neutron-dhcp-agent
         state: restarted
